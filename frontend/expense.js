@@ -1,0 +1,116 @@
+let token;
+
+const params = new URLSearchParams(window.location.search);
+const orderId = params.get("order_id");
+
+// Extracting orderId after return url directed by cashfree and verifying payment
+if (orderId) {
+  (async () => {
+    const response = await axios.get(`/payment/verify/${orderId}`);
+    console.log(response.data.status);
+    if (response.data.status === "PAID") {
+     alert("You are a premium user now!")
+    }
+  })();
+}
+
+window.onload = () => {
+  storedToken = localStorage.getItem("token");
+  if (!storedToken) {
+    alert("User not logged in");
+    window.location.href = "/index.html";
+    return;
+  }
+  token = `Bearer ${storedToken}`;
+
+  displayExpenseHistory();
+};
+
+const cashfree = Cashfree({
+  mode: "sandbox",
+});
+
+async function handleCashfree() {
+  try {
+    const res = await axios.post(
+      "/payment/create-order",
+      {
+        amount: 500,
+      },
+      { headers: { Authorization: token } },
+    );
+
+    const sessionId = res.data.data.payment_session_id;
+    // 3️⃣ Open Cashfree Checkout
+    const cashfree = Cashfree({ mode: "sandbox" });
+
+    cashfree.checkout({
+      paymentSessionId: sessionId,
+      redirectTarget: "_self",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function handleExpenseSubmit(event) {
+  event.preventDefault();
+  try {
+    const formData = new FormData(event.target);
+    const amount = formData.get("amount");
+    const description = formData.get("description");
+    const category = formData.get("category");
+
+    const addToUser = await axios.post(
+      "/expense/add",
+      {
+        amount,
+        description,
+        category,
+      },
+      { headers: { Authorization: token } },
+    );
+    console.log(addToUser.data.message);
+    displayExpenseHistory();
+    event.target.reset();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function displayExpenseHistory() {
+  try {
+    const response = await axios.get("/expense/get", {
+      headers: { Authorization: token },
+    });
+    const data = response.data;
+    const ulContainer = document.getElementById("ul-container");
+    ulContainer.innerHTML = "";
+    data.forEach((expense) => {
+      const li = document.createElement("li");
+      li.innerText = ` Description: ${expense.description} - amount-${expense.amount} category-${expense.category}`;
+      li.className = "bg-gray-300 px-12 py-2 min-w-full rounded-md";
+      const deleteBtn = document.createElement("button");
+      deleteBtn.innerText = "Delete";
+      deleteBtn.className =
+        "bg-red-200 px-2 ml-4 rounded-md border border-gray-700 hover:bg-red-400";
+      deleteBtn.onclick = () => {
+        deleteExpense(expense.id);
+      };
+      li.appendChild(deleteBtn);
+      ulContainer.prepend(li);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+async function deleteExpense(id) {
+  try {
+    await axios.delete(`/expense/delete/${id}`, {
+      headers: { Authorization: token },
+    });
+    displayExpenseHistory();
+  } catch (error) {
+    console.log(error);
+  }
+}

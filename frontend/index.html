@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="./src/output.css" rel="stylesheet" />
+    <title>Expense Tracker</title>
+  </head>
+  <body class="bg-blue-950/90">
+    <div
+      id="signup-success"
+      class="p-4 font-medium text-green-400 rounded-md"
+    ></div>
+    <div id="signup-fail" class="p-4 font-medium text-red-400"></div>
+    <h1 class="text-3xl text-gray-100 font-bold text-center underline m-5">Signup/login</h1>
+
+    <form
+      id="signup-form"
+      onsubmit="handleSignupSubmit(event)"
+      class="bg-blue-200 flex flex-col w-fit p-10 m-auto gap-2 px-14 rounded-lg"
+    >
+      <label for="signup-name">Enter Name</label>
+      <input
+        type="text"
+        name="name"
+        id="signup-name"
+        class="border border-gray-700 rounded-md"
+        required
+      />
+      <label for="signup-email">Enter email</label>
+      <input
+        type="text"
+        name="email"
+        id="signup-email"
+        class="border border-gray-700 rounded-md"
+        required
+      />
+      <label for="signup-password">Enter password</label>
+      <input
+        type="password"
+        name="password"
+        id="signup-password"
+        autocomplete="current-password"
+        class="border border-gray-700 rounded-md"
+        required
+      />
+      <button
+        type="submit"
+        class="mx-2 bg-blue-500 cursor-pointer  border border-b-blue-950 text-white p-1 rounded-sm"
+      >
+        Signup
+      </button>
+    </form>
+
+    <form
+      id="login-form"
+      onsubmit="handleLoginSubmit(event)"
+      class="bg-blue-200 flex flex-col w-fit p-10 m-auto gap-2 px-14 rounded-lg hidden"
+    >
+      <label for="login-email">Enter email</label>
+      <input
+        type="text"
+        name="email"
+        id="login-email"
+        class="border border-gray-700 rounded-md"
+        required
+      />
+      <label for="login-password">Enter password</label>
+      <input
+        type="password"
+        name="password"
+        id="login-password"
+        autocomplete="current-password"
+        class="border border-gray-700 rounded-md"
+        required
+      />
+      <button
+        type="submit"
+        class="mx-2 bg-blue-500 border border-b-blue-950 text-white p-1 rounded-sm cursor-pointer"
+      >
+        Login
+      </button>
+    </form>
+
+<div class="flex justify-center">
+  <button
+    id="login-btn"
+    type="button"
+    onclick="toggleForm(event)"
+    class="p-4 font-bold text-gray-100 underline text-xl cursor-pointer"
+  >
+    Login
+  </button>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
