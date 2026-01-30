@@ -1,10 +1,12 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const db = require("./utils/db-connection");
 const userRoute = require("./routes/userRoute");
-const paymentRoute = require('./routes/paymentRoute')
+const paymentRoute = require("./routes/paymentRoute");
 const expenseRoute = require("./routes/expenseRoute");
+const premiumRoute = require("./routes/premiumRoute");
+
 const app = express();
 require("./models");
 
@@ -16,7 +18,9 @@ app.use("/user", userRoute);
 
 app.use("/expense", expenseRoute);
 
-app.use('/payment',paymentRoute)
+app.use("/payment", paymentRoute);
+
+app.use("/premium", premiumRoute);
 
 db.sync({ alter: true })
   .then(() => {

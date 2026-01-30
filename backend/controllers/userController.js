@@ -62,4 +62,21 @@ const n_login = async (req, res) => {
   }
 };
 
-module.exports = { n_signup, n_login };
+const get_user = async (req, res) => {
+  try {
+    const { userId } = req.user;
+
+    const user = await userModel.findByPk(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ isPremium: user.isPremium, name: user.name });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+module.exports = { n_signup, n_login ,get_user};
