@@ -9,7 +9,7 @@ if (orderId) {
     const response = await axios.get(`/payment/verify/${orderId}`);
     console.log(response.data.status);
     if (response.data.status === "PAID") {
-     alert("You are a premium user now!")
+      alert("You are a premium user now!");
     }
   })();
 }
@@ -23,12 +23,57 @@ window.onload = () => {
   }
   token = `Bearer ${storedToken}`;
 
+  isUser();
   displayExpenseHistory();
 };
 
-const cashfree = Cashfree({
-  mode: "sandbox",
-});
+async function isUser() {
+  try {
+    const response = await axios.get("/user/userDetail", {
+      headers: { Authorization: token },
+    });
+
+    const userTag = document.getElementById("username-tag");
+    userTag.innerText = response.data.name;
+    if (response.data.isPremium) {
+      premiumUser();
+    } else {
+      document.getElementById("buy-premium-btn").innerText =
+        "Buy Premium membership";
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+function premiumUser() {
+  document.getElementById("buy-premium-btn").remove();
+  const h2Premium = document.getElementById("premium-h2");
+  h2Premium.innerText = "Premium User";
+  const leaderboardBtn = document.getElementById("leaderboard-btn");
+  leaderboardBtn.classList.remove("hidden");
+}
+
+async function showLeaderboard() {
+  try {
+    const ulContainer = document.getElementById("ul-leaderboard");
+    ulContainer.innerHTML = "";
+    const response = await axios.get("/premium/leaderboard");
+    const leaderboardData = response.data.leaderboard;
+    const h2 = document.createElement("h2");
+    h2.innerText = "Leaderboard";
+    h2.className = "text-2xl text-center px-2 font-mono rounded-sm bg-blue-200";
+    ulContainer.appendChild(h2);
+    leaderboardData.forEach((record) => {
+      const li = document.createElement("li");
+      li.innerText = `Name - ${record.user.name}  Total expense - ${record.totalExpense}`;
+
+      ulContainer.appendChild(li);
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 
 async function handleCashfree() {
   try {

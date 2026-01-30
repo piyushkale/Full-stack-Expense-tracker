@@ -9,15 +9,23 @@
   </head>
   <body>
     <button
+      id="buy-premium-btn"
       onclick="handleCashfree()"
       class="fixed top-0 md:top-4 right-0 md:right-4 z-50 px-5 py-2.5 rounded-full scale-[60%] md:scale-100 bg-linear-to-r from-yellow-400 via-amber-500 to-yellow-600 text-black font-semibold shadow-lg shadow-yellow-500/40 hover:scale-105 hover:shadow-xl active:scale-95 transition-all duration-200"
-    >
-      Buy Premium membership
-    </button>
+    ></button>
 
+    <h2
+      id="premium-h2"
+      class="absolute top-0 md:top-4 right-0 md:right-4 z-50 px-5 py-2.5 rounded-full scale-[60%] md:scale-100 bg-linear-to-r from-indigo-500 via-indigo-600 to-indigo-700 text-white font-mono font-semibold shadow-lg shadow-indigo-500/40 hover:scale-105 hover:shadow-xl active:scale-95 transition-all duration-200"
+    ></h2>
+
+    <h2 id="username-tag" class="absolute top-2 left-3 font-bold text-2xl bg-blue-900/70 text-gray-200 p-2 rounded-md"></h2>
     <h2 class="text-2xl font-mono text-center p-6 bg-blue-200">
       Manage Expenses 💰💸
     </h2>
+    
+    <button onclick="showLeaderboard()" class="hidden absolute text-lg font-sans left-2 -translate-y-4 bg-amber-50 border border-black scale-90 cursor-pointer hover:bg-amber-200 px-2 rounded-md" id="leaderboard-btn">Show leaderboard</button>
+    
 
     <form
       onsubmit="handleExpenseSubmit(event)"
@@ -60,6 +68,13 @@
         Add expense
       </button>
     </form>
+
+    
+    <section>
+      <ul id="ul-leaderboard" class="flex flex-col gap-4 items-center bg-gray-200 text-gray-900 pl-8 text-lg">
+
+      </ul>
+    </section>
 
     <section>
       <h2 class="text-2xl font-mono text-center p-6 bg-blue-200">
