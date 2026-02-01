@@ -50,6 +50,7 @@ function premiumUser() {
   document.getElementById("buy-premium-btn").remove();
   const h2Premium = document.getElementById("premium-h2");
   h2Premium.innerText = "Premium User";
+  h2Premium.classList.add('px-5','py-2.5')
   const leaderboardBtn = document.getElementById("leaderboard-btn");
   leaderboardBtn.classList.remove("hidden");
 }
@@ -60,13 +61,14 @@ async function showLeaderboard() {
     ulContainer.innerHTML = "";
     const response = await axios.get("/premium/leaderboard");
     const leaderboardData = response.data.leaderboard;
+    console.log(leaderboardData)
     const h2 = document.createElement("h2");
     h2.innerText = "Leaderboard";
     h2.className = "text-2xl text-center px-2 font-mono rounded-sm bg-blue-200";
     ulContainer.appendChild(h2);
     leaderboardData.forEach((record) => {
       const li = document.createElement("li");
-      li.innerText = `Name - ${record.user.name}  Total expense - ${record.totalExpense}`;
+      li.innerText = `Name - ${record.name}  Total expense - ${record.totalExpense}`;
 
       ulContainer.appendChild(li);
     });
