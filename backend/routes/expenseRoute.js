@@ -10,4 +10,6 @@ router.get("/get",exController.getAllExpense);
 
 router.delete('/delete/:id',exController.deleteExpense)
 
+router.post('/getCategoryAI',exController.categoryAI)
+
 module.exports = router;

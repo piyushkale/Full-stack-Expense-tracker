@@ -1,5 +1,6 @@
 const expenseModel = require("../models/expenseModel");
 const userModel = require("../models/userModel");
+const aiService = require("../services/categoryAI");
 
 const addExpense = async (req, res) => {
   try {
@@ -43,7 +44,7 @@ const deleteExpense = async (req, res) => {
     const expense = await expenseModel.findOne({ where: { id } });
     const user = await userModel.findByPk(expense.userId);
     await user.decrement("totalExpense", { by: expense.amount });
-  
+
     await expenseModel.destroy({ where: { id } });
     res.status(200).json({ message: "Expense deleted" });
   } catch (error) {
@@ -51,4 +52,16 @@ const deleteExpense = async (req, res) => {
   }
 };
 
-module.exports = { addExpense, getAllExpense, deleteExpense };
+const categoryAI = async (req, res) => {
+  try {
+    const { description } = req.body;
+
+    const response = await aiService.aiCategory(description);
+
+    res.status(200).json({ category: response });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { addExpense, getAllExpense, deleteExpense ,categoryAI};
