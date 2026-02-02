@@ -30,6 +30,10 @@ async function handleLoginSubmit(event) {
   const formData = new FormData(event.target);
   const email = formData.get("email");
   const password = formData.get("password");
+  if (!email || !password) {
+    signupStatus("fail", "Enter all the inputs");
+    return;
+  }
   try {
     const loginRes = await axios.post("/user/login/", {
       email,
@@ -45,6 +49,33 @@ async function handleLoginSubmit(event) {
   } catch (error) {
     signupStatus("fail", error.response.data.error);
   }
+}
+
+async function handleResetPassword(event) {
+  event.preventDefault();
+  const email = event.target.email.value;
+  if (!email) {
+    return signupStatus("fail", "Enter email address");
+  }
+  try {
+    const response = await axios.post("/user/forgetPassword", {
+      email,
+    });
+    const msg = response.data.message;
+    if (msg) {
+      signupStatus("success", msg);
+    }
+  } catch (error) {
+    signupStatus("fail", error.response.data.error);
+  }
+}
+
+function resetPassForm() {
+  const loginForm = document.getElementById("login-form");
+  loginForm.classList.add("hidden");
+  const resetPassForm = document.getElementById("reset-form");
+  resetPassForm.classList.remove("hidden");
+  resetPassForm.classList.add("flex");
 }
 
 function signupStatus(status, message) {
@@ -73,10 +104,13 @@ function toggleForm(event) {
   if (toggleSignupLogin === true) {
     signupForm.classList.add("hidden");
     loginForm.classList.remove("hidden");
+    loginForm.classList.add("flex");
     event.target.innerText = "Signup";
   } else {
     signupForm.classList.remove("hidden");
     loginForm.classList.add("hidden");
+    const resetPassForm = document.getElementById("reset-form");
+    resetPassForm.classList.add("hidden");
     event.target.innerText = "Login";
   }
 }

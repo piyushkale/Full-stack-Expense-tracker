@@ -9,11 +9,11 @@
   <body class="bg-[radial-gradient(circle_at_center,#627ddf,#323a68)] min-h-screen bg-fixed">
     <div
       id="signup-success"
-      class="p-4 font-medium text-green-400 rounded-md"
+      class="p-4 font-medium text-green-400 rounded-md absolute top-10 left-5"
     ></div>
     <div id="signup-fail" class="p-4 font-medium text-red-400"></div>
     <h1 class="text-3xl text-gray-100 font-bold text-center underline m-5">Signup/login</h1>
-
+<!-- Signup Form -->
     <form
       id="signup-form"
       onsubmit="handleSignupSubmit(event)"
@@ -25,7 +25,7 @@
         name="name"
         id="signup-name"
         class="border border-gray-700 rounded-md"
-        required
+         
       />
       <label for="signup-email">Enter email</label>
       <input
@@ -33,7 +33,7 @@
         name="email"
         id="signup-email"
         class="border border-gray-700 rounded-md"
-        required
+         
       />
       <label for="signup-password">Enter password</label>
       <input
@@ -42,7 +42,7 @@
         id="signup-password"
         autocomplete="current-password"
         class="border border-gray-700 rounded-md"
-        required
+         
       />
       <button
         type="submit"
@@ -51,11 +51,11 @@
         Signup
       </button>
     </form>
-
+<!-- Login Form  -->
     <form
       id="login-form"
       onsubmit="handleLoginSubmit(event)"
-      class="bg-blue-200 flex flex-col w-fit p-10 m-auto gap-2 px-14 rounded-lg hidden"
+      class="bg-blue-200 flex-col w-fit p-10 m-auto gap-2 px-14 rounded-lg hidden"
     >
       <label for="login-email">Enter email</label>
       <input
@@ -63,7 +63,7 @@
         name="email"
         id="login-email"
         class="border border-gray-700 rounded-md"
-        required
+         
       />
       <label for="login-password">Enter password</label>
       <input
@@ -72,7 +72,7 @@
         id="login-password"
         autocomplete="current-password"
         class="border border-gray-700 rounded-md"
-        required
+         
       />
       <button
         type="submit"
@@ -80,6 +80,13 @@
       >
         Login
       </button>
+      <button onclick="resetPassForm()" id="forgot-toggle" class="bg-gray-100/50 w-fit px-1 rounded-sm hover:bg-gray-300 cursor-pointer border border-red-900 scale-90">forgot password</button>
+    </form>
+<!-- Reset Password Form -->
+    <form class="hidden bg-blue-200 flex-col w-fit p-10 m-auto gap-2 px-14 rounded-lg" id="reset-form" onsubmit="handleResetPassword(event)">
+      <label for="reset-email">Enter registered email</label>
+      <input type="email" name="email" id="reset-email" class="border border-gray-700 rounded-md"  />
+      <button type="submit" class="mx-2 bg-blue-500 border border-b-blue-950 text-white p-1 rounded-sm cursor-pointer">submit</button>
     </form>
 
 <div class="flex justify-center">
@@ -92,6 +99,7 @@
     Login
   </button>
 </div>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="main.js"></script>
   </body>
