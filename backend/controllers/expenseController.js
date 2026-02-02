@@ -1,21 +1,33 @@
 const expenseModel = require("../models/expenseModel");
 const userModel = require("../models/userModel");
 const aiService = require("../services/categoryAI");
+const sequelize = require("../utils/db-connection");
 
 const addExpense = async (req, res) => {
+  const t = await sequelize.transaction();
+
   try {
     const { amount, category, description } = req.body;
 
     const userId = req.user.userId;
 
-    const user = await userModel.findByPk(userId);
+    const user = await userModel.findByPk(userId, { transaction: t });
     if (!user) {
+      await t.rollback();
       return res.status(404).json({ message: "User not found" });
     }
-    await user.createExpense({ amount, description, category });
-    await user.increment("totalExpense", { by: Math.round(amount) });
+    await user.createExpense(
+      { amount, description, category },
+      { transaction: t },
+    );
+    await user.increment("totalExpense", {
+      by: Math.round(amount),
+      transaction: t,
+    });
+    await t.commit();
     res.status(201).json({ message: "Expense added!" });
   } catch (error) {
+    await t.rollback();
     res.status(500).json({ error: error.message });
   }
 };
@@ -39,15 +51,25 @@ const getAllExpense = async (req, res) => {
 };
 
 const deleteExpense = async (req, res) => {
+  const t = await sequelize.transaction();
   try {
     const { id } = req.params;
-    const expense = await expenseModel.findOne({ where: { id } });
-    const user = await userModel.findByPk(expense.userId);
-    await user.decrement("totalExpense", { by: expense.amount });
+    const expense = await expenseModel.findOne({
+      where: { id },
+      transaction: t,
+    });
 
-    await expenseModel.destroy({ where: { id } });
+    const user = await userModel.findByPk(expense.userId, { transaction: t });
+    await user.decrement("totalExpense", {
+      by: expense.amount,
+      transaction: t,
+    });
+
+    await expenseModel.destroy({ where: { id }, transaction: t });
+    await t.commit();
     res.status(200).json({ message: "Expense deleted" });
   } catch (error) {
+    await t.rollback();
     res.status(500).json({ error: error.message });
   }
 };
@@ -64,4 +86,4 @@ const categoryAI = async (req, res) => {
   }
 };
 
-module.exports = { addExpense, getAllExpense, deleteExpense ,categoryAI};
+module.exports = { addExpense, getAllExpense, deleteExpense, categoryAI };

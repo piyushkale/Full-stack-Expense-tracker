@@ -4,7 +4,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 const aiCategory = async (description) => {
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: "gemini-2.5-flash-lite",
       contents: `You are an expense categorization system.
 
 Allowed categories:
@@ -24,7 +24,7 @@ Expense description:
 
     return response.text;
   } catch (error) {
-    return "Failed";
+    return "Other";
   }
 };
 
