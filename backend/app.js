@@ -22,6 +22,10 @@ app.use("/payment", paymentRoute);
 
 app.use("/premium", premiumRoute);
 
+app.get("/resetPassword/:uuid", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/resetPassword.html"));
+});
+
 db.sync({ alter: true })
   .then(() => {
     console.log("All models attached to db are synced");

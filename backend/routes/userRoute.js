@@ -7,7 +7,9 @@ router.post("/signup", userController.n_signup);
 
 router.post("/login", userController.n_login);
 
-router.post('/forgetPassword',userController.forgetPassword)
+router.post("/forgetPassword", userController.forgetPassword);
+
+router.post("/resetPassword", userController.resetPassword);
 
 router.get("/userDetail", authenticate, userController.get_user);
 

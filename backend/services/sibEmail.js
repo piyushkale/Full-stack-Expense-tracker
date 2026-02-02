@@ -8,16 +8,17 @@ apiKey.apiKey = process.env.SIB_API_KEY;
 
 const transactionalApi = new SibApiV3Sdk.TransactionalEmailsApi();
 
-const sendEmail = async (to) => {
+const sendEmail = async (to, uuid) => {
   const emailData = {
     sender: {
       email: process.env.SENDER_EMAIL,
       name: process.env.SENDER_NAME,
     },
     to: [{ email: to }],
-    subject:"Reset password link",
+    subject: "Reset password link",
     htmlContent: `
-    <h1>Email sent using SIB service</h1>
+    <h1>Click the link below to create new password</h1>
+    <a href='http://localhost:3000/resetPassword/${uuid}'>Reset Password</a>
     `,
   };
 
