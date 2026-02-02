@@ -1,7 +1,8 @@
-const { UniqueConstraintError } = require("sequelize");
+const { UniqueConstraintError, json } = require("sequelize");
 const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const sibEmail = require("../services/sibEmail");
 
 const SALT_ROUNDS = 10;
 const n_signup = async (req, res) => {
@@ -79,4 +80,16 @@ const get_user = async (req, res) => {
   }
 };
 
-module.exports = { n_signup, n_login ,get_user};
+const forgetPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    // const response = await sibEmailService(email)
+    await sibEmail(email.toLowerCase().trim());
+    res.status(200).json({ message: `Email sent to ${email}` });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { n_signup, n_login, get_user, forgetPassword };
