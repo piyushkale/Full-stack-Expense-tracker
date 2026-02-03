@@ -33,7 +33,8 @@ const addExpense = async (req, res) => {
 };
 
 const getAllExpense = async (req, res) => {
-  const limit = 10;
+  const limit = Number(req.query.limit) || 10;
+
   const page = Math.max(Number(req.query.page) || 1, 1);
   const offset = (page - 1) * limit;
 
