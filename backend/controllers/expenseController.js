@@ -33,6 +33,10 @@ const addExpense = async (req, res) => {
 };
 
 const getAllExpense = async (req, res) => {
+  const limit = 10;
+  const page = Math.max(Number(req.query.page) || 1, 1);
+  const offset = (page - 1) * limit;
+
   try {
     const userId = req.user.userId;
 
@@ -42,9 +46,19 @@ const getAllExpense = async (req, res) => {
       return res.status(404).json({ message: "User id not found" });
     }
 
-    const expenseData = await user.getExpenses();
+    const expenseData = await user.getExpenses({
+      limit,
+      offset,
+      order: [["createdAt", "DESC"]],
+    });
+    const totalExpenses = await user.countExpenses();
 
-    res.status(200).json(expenseData);
+    res.status(200).json({
+      expenses: expenseData,
+      currentPage: page,
+      totalPages: Math.ceil(totalExpenses / limit),
+      totalItems: totalExpenses,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
