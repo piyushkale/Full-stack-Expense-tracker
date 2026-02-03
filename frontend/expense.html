@@ -114,11 +114,34 @@
         ></ul>
         <!-- Pagination -->
         <div id="pagination" class="flex justify-center gap-2 items-center">
-          <button id="prevBtn" class="bg-gray-100 border border-gray-500 px-1 rounded-sm cursor-pointer m-2">Prev</button>
+          <button
+            id="prevBtn"
+            class="bg-gray-100 border border-gray-500 px-1 rounded-sm cursor-pointer m-2"
+          >
+            Prev
+          </button>
           <span id="pageInfo">1</span>
-          <button id="nextBtn" class="bg-gray-100 border border-gray-500 px-1 rounded-sm cursor-pointer m-2">Next</button>
-          <button id="lastBtn" class="bg-gray-100 border border-gray-500 px-1 rounded-sm cursor-pointer m-2">Last</button>
+          <button
+            id="nextBtn"
+            class="bg-gray-100 border border-gray-500 px-1 rounded-sm cursor-pointer m-2"
+          >
+            Next
+          </button>
+          <button
+            id="lastBtn"
+            class="bg-gray-100 border border-gray-500 px-1 rounded-sm cursor-pointer m-2"
+          >
+            Last
+          </button>
+          <label for="rowsPerPage">No. of</label>
+            <select id="rowsPerPage" class="border border-gray-600 bg-slate-100">
+              <option disabled selected>rows</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+        </select>
         </div>
+      
       </section>
     </div>
 

@@ -1,6 +1,7 @@
 let token;
 let currentPage = 1;
 let totalPages = 1;
+let rowsPerPage = Number(localStorage.getItem("rowsPerPage")) || 10;
 
 const params = new URLSearchParams(window.location.search);
 const orderId = params.get("order_id");
@@ -58,17 +59,17 @@ function premiumUser() {
   premiumDiv.classList.add("flex");
 }
 
-// let toggle = false;
+let toggle = false;
 async function showLeaderboard() {
   try {
     const ulContainer = document.getElementById("ul-leaderboard");
     ulContainer.innerHTML = "";
 
-    // if (toggle) {
-    //   ulContainer.innerHTML = "";
-    //   toggle = false;
-    //   return;
-    // }
+    if (toggle) {
+      ulContainer.innerHTML = "";
+      toggle = false;
+      return;
+    }
 
     document.getElementById("home-div").classList.remove("hidden");
     document.getElementById("yearly-div").classList.add("hidden");
@@ -87,7 +88,7 @@ async function showLeaderboard() {
 
       ulContainer.appendChild(li);
     });
-    // toggle = true;
+    toggle = true;
   } catch (error) {
     console.log(error.message);
   }
@@ -141,20 +142,25 @@ async function handleExpenseSubmit(event) {
   }
 }
 
+// Displaying expense
 async function displayExpenseHistory(page = 1) {
   try {
-    const response = await axios.get(`/expense/get?page=${page}`, {
-      headers: { Authorization: token },
-    });
+    const response = await axios.get(
+      `/expense/get?page=${page}&limit=${rowsPerPage}`,
+      {
+        headers: { Authorization: token },
+      },
+    );
     const data = response.data.expenses;
     currentPage = response.data.currentPage;
     totalPages = response.data.totalPages;
     const ulContainer = document.getElementById("ul-container");
     ulContainer.innerHTML = "";
+
     data.forEach((expense) => {
       const li = document.createElement("li");
       li.innerText = `📑 Description: ${expense.description} ▪️ amount ${expense.amount} ▪️ category ${expense.category}`;
-      li.className = "bg-gray-300 px-12 py-2 min-w-full rounded-md";
+      li.className = "bg-gray-300 px-12 py-2 min-w-full rounded-md font-medium";
       const deleteBtn = document.createElement("button");
       deleteBtn.innerText = "Delete";
       deleteBtn.className =
@@ -169,6 +175,7 @@ async function displayExpenseHistory(page = 1) {
     console.log(error);
   }
 }
+// Pagination
 
 document.getElementById("prevBtn").onclick = () => {
   if (currentPage > 1) {
@@ -186,12 +193,26 @@ document.getElementById("lastBtn").onclick = () => {
   displayExpenseHistory(totalPages);
 };
 
+document.getElementById("rowsPerPage").onchange = (e) => {
+  rowsPerPage = Number(e.target.value);
+  currentPage = 1; // 🔴 RESET PAGE
+  localStorage.setItem("rowsPerPage", rowsPerPage);
+  displayExpenseHistory(1);
+};
+
+// Delete expense
+
 async function deleteExpense(id) {
   try {
     await axios.delete(`/expense/delete/${id}`, {
       headers: { Authorization: token },
     });
-    displayExpenseHistory();
+    const ulLength = document.getElementById("ul-container").children.length;
+    if (ulLength === 1 && currentPage > 1) {
+      displayExpenseHistory(currentPage - 1);
+      return;
+    }
+    displayExpenseHistory(currentPage);
   } catch (error) {
     console.log(error);
   }
