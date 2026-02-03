@@ -1,4 +1,6 @@
 let token;
+let currentPage = 1;
+let totalPages = 1;
 
 const params = new URLSearchParams(window.location.search);
 const orderId = params.get("order_id");
@@ -67,11 +69,11 @@ async function showLeaderboard() {
     //   toggle = false;
     //   return;
     // }
-    
-  document.getElementById('home-div').classList.remove('hidden')
-  document.getElementById('yearly-div').classList.add('hidden')
-  document.getElementById('monthly-div').classList.add('hidden')
-  
+
+    document.getElementById("home-div").classList.remove("hidden");
+    document.getElementById("yearly-div").classList.add("hidden");
+    document.getElementById("monthly-div").classList.add("hidden");
+
     const response = await axios.get("/premium/leaderboard");
     const leaderboardData = response.data.leaderboard;
     console.log(leaderboardData);
@@ -139,17 +141,19 @@ async function handleExpenseSubmit(event) {
   }
 }
 
-async function displayExpenseHistory() {
+async function displayExpenseHistory(page = 1) {
   try {
-    const response = await axios.get("/expense/get", {
+    const response = await axios.get(`/expense/get?page=${page}`, {
       headers: { Authorization: token },
     });
-    const data = response.data;
+    const data = response.data.expenses;
+    currentPage = response.data.currentPage;
+    totalPages = response.data.totalPages;
     const ulContainer = document.getElementById("ul-container");
     ulContainer.innerHTML = "";
     data.forEach((expense) => {
       const li = document.createElement("li");
-      li.innerText = ` Description: ${expense.description} - amount-${expense.amount} category-${expense.category}`;
+      li.innerText = `📑 Description: ${expense.description} ▪️ amount ${expense.amount} ▪️ category ${expense.category}`;
       li.className = "bg-gray-300 px-12 py-2 min-w-full rounded-md";
       const deleteBtn = document.createElement("button");
       deleteBtn.innerText = "Delete";
@@ -159,12 +163,28 @@ async function displayExpenseHistory() {
         deleteExpense(expense.id);
       };
       li.appendChild(deleteBtn);
-      ulContainer.prepend(li);
+      ulContainer.append(li);
     });
   } catch (error) {
     console.log(error);
   }
 }
+
+document.getElementById("prevBtn").onclick = () => {
+  if (currentPage > 1) {
+    displayExpenseHistory(currentPage - 1);
+  }
+};
+
+document.getElementById("nextBtn").onclick = () => {
+  if (currentPage < totalPages) {
+    displayExpenseHistory(currentPage + 1);
+  }
+};
+
+document.getElementById("lastBtn").onclick = () => {
+  displayExpenseHistory(totalPages);
+};
 
 async function deleteExpense(id) {
   try {
@@ -216,14 +236,14 @@ description.addEventListener("input", () => {
 });
 
 function displayMonthlyReport() {
-  document.getElementById('home-div').classList.add('hidden')
-    document.getElementById('yearly-div').classList.add('hidden') 
+  document.getElementById("home-div").classList.add("hidden");
+  document.getElementById("yearly-div").classList.add("hidden");
 
-  document.getElementById('monthly-div').classList.remove('hidden')
+  document.getElementById("monthly-div").classList.remove("hidden");
 }
 
 function displayYearlyReport() {
- document.getElementById('home-div').classList.add('hidden')
-  document.getElementById('monthly-div').classList.add('hidden')
-  document.getElementById('yearly-div').classList.remove('hidden') 
+  document.getElementById("home-div").classList.add("hidden");
+  document.getElementById("monthly-div").classList.add("hidden");
+  document.getElementById("yearly-div").classList.remove("hidden");
 }

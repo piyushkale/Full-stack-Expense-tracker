@@ -112,13 +112,24 @@
           id="ul-container"
           class="flex flex-col gap-4 items-center p-2 bg-gray-200 min-h-96 text-gray-800 pl-8 text-lg"
         ></ul>
+        <!-- Pagination -->
+        <div id="pagination" class="flex justify-center gap-2 items-center">
+          <button id="prevBtn" class="bg-gray-100 border border-gray-500 px-1 rounded-sm cursor-pointer m-2">Prev</button>
+          <span id="pageInfo">1</span>
+          <button id="nextBtn" class="bg-gray-100 border border-gray-500 px-1 rounded-sm cursor-pointer m-2">Next</button>
+          <button id="lastBtn" class="bg-gray-100 border border-gray-500 px-1 rounded-sm cursor-pointer m-2">Last</button>
+        </div>
       </section>
     </div>
 
     <!-- Monthly Report - Yearly Report -->
     <div>
       <div class="overflow-hidden border rounded-lg hidden" id="monthly-div">
-        <button class="absolute left-2 translate-y-1 bg-blue-200 border border-gray-800 px-1 rounded-sm cursor-pointer">Download Report</button>
+        <button
+          class="absolute left-2 translate-y-1 bg-blue-200 border border-gray-800 px-1 rounded-sm cursor-pointer"
+        >
+          Download Report
+        </button>
         <h2 class="text-center py-2">Monthly Report</h2>
         <table class="w-full text-sm border-collapse">
           <thead class="bg-gray-100">
@@ -166,8 +177,12 @@
       </div>
 
       <div class="overflow-hidden border rounded-lg hidden" id="yearly-div">
-        <button class="absolute left-2 translate-y-1 bg-blue-200 border border-gray-800 px-1 rounded-sm cursor-pointer">Download Report</button>
-            <h2 class="text-center  py-2">Yearly Report</h2>
+        <button
+          class="absolute left-2 translate-y-1 bg-blue-200 border border-gray-800 px-1 rounded-sm cursor-pointer"
+        >
+          Download Report
+        </button>
+        <h2 class="text-center py-2">Yearly Report</h2>
         <table class="w-full text-sm border-collapse">
           <thead class="bg-gray-100">
             <tr>
