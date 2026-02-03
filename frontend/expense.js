@@ -51,21 +51,27 @@ function premiumUser() {
   const h2Premium = document.getElementById("premium-h2");
   h2Premium.innerText = "Premium User";
   h2Premium.classList.add("px-5", "py-2.5");
-  const leaderboardBtn = document.getElementById("leaderboard-btn");
-  leaderboardBtn.classList.remove("hidden");
+  const premiumDiv = document.getElementById("premium-div");
+  premiumDiv.classList.remove("hidden");
+  premiumDiv.classList.add("flex");
 }
 
-let toggle = false;
+// let toggle = false;
 async function showLeaderboard() {
   try {
     const ulContainer = document.getElementById("ul-leaderboard");
     ulContainer.innerHTML = "";
 
-    if (toggle) {
-      ulContainer.innerHTML = "";
-      toggle = false;
-      return;
-    }
+    // if (toggle) {
+    //   ulContainer.innerHTML = "";
+    //   toggle = false;
+    //   return;
+    // }
+    
+  document.getElementById('home-div').classList.remove('hidden')
+  document.getElementById('yearly-div').classList.add('hidden')
+  document.getElementById('monthly-div').classList.add('hidden')
+  
     const response = await axios.get("/premium/leaderboard");
     const leaderboardData = response.data.leaderboard;
     console.log(leaderboardData);
@@ -79,7 +85,7 @@ async function showLeaderboard() {
 
       ulContainer.appendChild(li);
     });
-    toggle = true;
+    // toggle = true;
   } catch (error) {
     console.log(error.message);
   }
@@ -172,14 +178,13 @@ async function deleteExpense(id) {
 }
 
 const description = document.getElementById("l-description");
-let timeout; 
+let timeout;
 
 description.addEventListener("input", () => {
   clearTimeout(timeout);
 
   timeout = setTimeout(async () => {
     try {
-    
       const desc = description.value;
       if (desc.length < 3) return;
 
@@ -209,3 +214,16 @@ description.addEventListener("input", () => {
     }
   }, 500);
 });
+
+function displayMonthlyReport() {
+  document.getElementById('home-div').classList.add('hidden')
+    document.getElementById('yearly-div').classList.add('hidden') 
+
+  document.getElementById('monthly-div').classList.remove('hidden')
+}
+
+function displayYearlyReport() {
+ document.getElementById('home-div').classList.add('hidden')
+  document.getElementById('monthly-div').classList.add('hidden')
+  document.getElementById('yearly-div').classList.remove('hidden') 
+}

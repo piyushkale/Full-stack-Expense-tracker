@@ -27,72 +27,174 @@
       Manage Expenses 💰💸
     </h2>
 
-    <button
-      onclick="showLeaderboard()"
-      class="hidden absolute text-lg font-sans left-2 -translate-y-4 bg-emerald-200 border border-black scale-90 cursor-pointer hover:bg-emerald-400/50 px-2 rounded-md"
-      id="leaderboard-btn"
+    <!-- Premium features div -->
+    <div
+      class="absolute right-2 -translate-y-4 hidden bg-indigo-400/70 px-2 py-1 rounded-md border-b-2 border-indigo-900"
+      id="premium-div"
     >
-      Show leaderboard
-    </button>
-
-    <form
-      onsubmit="handleExpenseSubmit(event)"
-      class="flex justify-center flex-wrap gap-4 bg-blue-100 py-5 text-md"
-    >
-      <label for="l-amount">Expense amount</label>
-      <input
-        class="bg-gray-200 border border-black"
-        type="number"
-        name="amount"
-        id="l-amount"
-        required
-      />
-      <label for="l-description">Description</label>
-      <input
-        class="bg-gray-200 border border-black"
-        type="text"
-        name="description"
-        id="l-description"
-        required
-      />
-      <label for="l-category">Choose category</label>
-      <select
-        class="border border-gray-800"
-        name="category"
-        id="l-category"
-        required
-      >
-        <option value="" disabled selected>--Select Category--</option>
-        <option value="food">Food</option>
-        <option value="fuel">Fuel</option>
-        <option value="movie">Movie</option>
-        <option value="electricity">Electricity</option>
-      </select>
       <button
-        type="submit"
-        class="bg-green-200 px-2 rounded-md border border-gray-700 hover:bg-green-400"
+        onclick="showLeaderboard()"
+        class="text-lg font-sans bg-gray-200 border border-black scale-90 cursor-pointer hover:bg-yellow-400/50 px-2 rounded-md"
+        id="leaderboard-btn"
       >
-        Add expense
+        Show leaderboard
       </button>
-    </form>
+      <button
+        onclick="displayMonthlyReport()"
+        class="text-lg font-sans bg-gray-200 border border-black scale-90 cursor-pointer hover:bg-yellow-400/50 px-2 rounded-md"
+      >
+        Monthly report
+      </button>
+      <button
+        onclick="displayYearlyReport()"
+        class="text-lg font-sans bg-gray-200 border border-black scale-90 cursor-pointer hover:bg-yellow-400/50 px-2 rounded-md"
+      >
+        Yearly report
+      </button>
+    </div>
 
-    <section>
-      <ul
-        id="ul-leaderboard"
-        class="flex flex-col gap-4 items-center bg-gray-200 text-gray-900 pl-8 text-lg"
-      ></ul>
-    </section>
+    <div id="home-div">
+      <!--  Add expense form -->
+      <form
+        onsubmit="handleExpenseSubmit(event)"
+        class="flex justify-center flex-wrap gap-4 bg-blue-100 py-8 pt-10 text-md"
+      >
+        <label for="l-amount">Expense amount</label>
+        <input
+          class="bg-gray-200 border border-black"
+          type="number"
+          name="amount"
+          id="l-amount"
+          required
+        />
+        <label for="l-description">Description</label>
+        <input
+          class="bg-gray-200 border border-black"
+          type="text"
+          name="description"
+          id="l-description"
+          required
+        />
+        <label for="l-category">Choose category</label>
+        <select
+          class="border border-gray-800"
+          name="category"
+          id="l-category"
+          required
+        >
+          <option value="" disabled selected>--Select Category--</option>
+          <option value="food">Food</option>
+          <option value="fuel">Fuel</option>
+          <option value="movie">Movie</option>
+          <option value="electricity">Electricity</option>
+        </select>
+        <button
+          type="submit"
+          class="bg-green-200 px-2 rounded-md border border-gray-700 hover:bg-green-400"
+        >
+          Add expense
+        </button>
+      </form>
 
-    <section>
-      <h2 class="text-2xl font-mono text-center p-6 bg-blue-200">
-        Expense History 📈
-      </h2>
-      <ul
-        id="ul-container"
-        class="flex flex-col gap-4 items-center p-2 bg-gray-200 min-h-96 text-gray-800 pl-8 text-lg"
-      ></ul>
-    </section>
+      <!-- leaderboard section  -->
+      <section>
+        <ul
+          id="ul-leaderboard"
+          class="flex flex-col gap-4 items-center bg-gray-200 text-gray-900 pl-8 text-lg"
+        ></ul>
+      </section>
+      <!-- Expense History Display section  -->
+      <section>
+        <h2 class="text-2xl font-mono text-center p-6 bg-blue-200">
+          Expense History 📈
+        </h2>
+        <ul
+          id="ul-container"
+          class="flex flex-col gap-4 items-center p-2 bg-gray-200 min-h-96 text-gray-800 pl-8 text-lg"
+        ></ul>
+      </section>
+    </div>
 
+    <!-- Monthly Report - Yearly Report -->
+    <div>
+      <div class="overflow-hidden border rounded-lg hidden" id="monthly-div">
+        <button class="absolute left-2 translate-y-1 bg-blue-200 border border-gray-800 px-1 rounded-sm cursor-pointer">Download Report</button>
+        <h2 class="text-center py-2">Monthly Report</h2>
+        <table class="w-full text-sm border-collapse">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="border px-3 py-2 text-left">Date</th>
+              <th class="border px-3 py-2 text-left">Description</th>
+              <th class="border px-3 py-2 text-left">Category</th>
+              <th class="border px-3 py-2 text-right">Amount (₹)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td class="border px-3 py-2">2026-02-01</td>
+              <td class="border px-3 py-2">Groceries</td>
+              <td class="border px-3 py-2">Food</td>
+              <td class="border px-3 py-2 text-right">450</td>
+            </tr>
+            <tr>
+              <td class="border px-3 py-2">2026-02-01</td>
+              <td class="border px-3 py-2">Groceries</td>
+              <td class="border px-3 py-2">Food</td>
+              <td class="border px-3 py-2 text-right">450</td>
+            </tr>
+            <tr>
+              <td class="border px-3 py-2">2026-02-01</td>
+              <td class="border px-3 py-2">Groceries</td>
+              <td class="border px-3 py-2">Food</td>
+              <td class="border px-3 py-2 text-right">450</td>
+            </tr>
+            <tr>
+              <td class="border px-3 py-2">2026-02-01</td>
+              <td class="border px-3 py-2">Groceries</td>
+              <td class="border px-3 py-2">Food</td>
+              <td class="border px-3 py-2 text-right">450</td>
+            </tr>
+            <tr>
+              <td class="border px-3 py-2">2026-02-01</td>
+              <td class="border px-3 py-2">Groceries</td>
+              <td class="border px-3 py-2">Food</td>
+              <td class="border px-3 py-2 text-right">450</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="overflow-hidden border rounded-lg hidden" id="yearly-div">
+        <button class="absolute left-2 translate-y-1 bg-blue-200 border border-gray-800 px-1 rounded-sm cursor-pointer">Download Report</button>
+            <h2 class="text-center  py-2">Yearly Report</h2>
+        <table class="w-full text-sm border-collapse">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="border px-3 py-2 text-left">Month</th>
+              <th class="border px-3 py-2 text-right">Total Amount (₹)</th>
+              <th class="border px-3 py-2 text-right">Entries</th>
+              <th class="border px-3 py-2 text-left">Top Category</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td class="border px-3 py-2">January</td>
+              <td class="border px-3 py-2 text-right">12,450</td>
+              <td class="border px-3 py-2 text-right">34</td>
+              <td class="border px-3 py-2">Food</td>
+            </tr>
+            <tr>
+              <td class="border px-3 py-2">January</td>
+              <td class="border px-3 py-2 text-right">12,450</td>
+              <td class="border px-3 py-2 text-right">34</td>
+              <td class="border px-3 py-2">Food</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="expense.js"></script>
   </body>
