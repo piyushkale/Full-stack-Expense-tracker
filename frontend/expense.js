@@ -124,6 +124,7 @@ async function handleExpenseSubmit(event) {
     const amount = formData.get("amount");
     const description = formData.get("description");
     const category = formData.get("category");
+    const note = formData.get("note");
 
     const addToUser = await axios.post(
       "/expense/add",
@@ -131,6 +132,7 @@ async function handleExpenseSubmit(event) {
         amount,
         description,
         category,
+        note,
       },
       { headers: { Authorization: token } },
     );
@@ -159,7 +161,7 @@ async function displayExpenseHistory(page = 1) {
 
     data.forEach((expense) => {
       const li = document.createElement("li");
-      li.innerText = `📑 Description: ${expense.description} ▪️ amount ${expense.amount} ▪️ category ${expense.category}`;
+      li.innerText = `📑 Description: ${expense.description} ▪️ amount ${expense.amount} ▪️ category ${expense.category} ▪️ note :${expense.note ? expense.note : 'not added'}`;
       li.className = "bg-gray-300 px-12 py-2 min-w-full rounded-md font-medium";
       const deleteBtn = document.createElement("button");
       deleteBtn.innerText = "Delete";
