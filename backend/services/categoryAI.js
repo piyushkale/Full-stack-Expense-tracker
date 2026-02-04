@@ -24,6 +24,7 @@ Expense description:
 
     return response.text;
   } catch (error) {
+    console.log(error.message)
     return "Other";
   }
 };

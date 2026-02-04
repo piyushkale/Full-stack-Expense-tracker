@@ -7,7 +7,7 @@ const addExpense = async (req, res) => {
   const t = await sequelize.transaction();
 
   try {
-    const { amount, category, description } = req.body;
+    const { amount, category, description ,note} = req.body;
 
     const userId = req.user.userId;
 
@@ -17,7 +17,7 @@ const addExpense = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     await user.createExpense(
-      { amount, description, category },
+      { amount, description, category ,note},
       { transaction: t },
     );
     await user.increment("totalExpense", {

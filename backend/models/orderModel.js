@@ -11,4 +11,3 @@ const orderModel = sequelize.define("order", {
 
 
 module.exports = orderModel
-

@@ -6,6 +6,7 @@ const expenseModel = sequelize.define("expense", {
   amount: DataTypes.STRING,
   description: DataTypes.STRING,
   category: DataTypes.STRING,
+  note: DataTypes.STRING,
 });
 
 module.exports = expenseModel;

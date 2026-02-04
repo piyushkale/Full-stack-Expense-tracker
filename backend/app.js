@@ -8,7 +8,7 @@ const expenseRoute = require("./routes/expenseRoute");
 const premiumRoute = require("./routes/premiumRoute");
 
 const app = express();
-require("./models");
+require("./models/associationModel");
 
 app.use(express.json());
 
@@ -26,7 +26,7 @@ app.get("/resetPassword/:uuid", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/resetPassword.html"));
 });
 
-db.sync({ alter: true })
+db.sync({})
   .then(() => {
     console.log("All models attached to db are synced");
   })

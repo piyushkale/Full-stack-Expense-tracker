@@ -1,25 +1,43 @@
-const user = require("../models/userModel");
-const expense = require("../models/expenseModel");
-const forgotPassword = require("../models/forgotPasswordModel");
+'use strict';
 
-user.hasMany(expense, {
-  foreignKey: "userId",
-  onDelete: "CASCADE",
-  hooks: true,
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const process = require('process');
+const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config.json')[env];
+const db = {};
+
+let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
+}
+
+fs
+  .readdirSync(__dirname)
+  .filter(file => {
+    return (
+      file.indexOf('.') !== 0 &&
+      file !== basename &&
+      file.slice(-3) === '.js' &&
+      file.indexOf('.test.js') === -1
+    );
+  })
+  .forEach(file => {
+    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+    db[model.name] = model;
+  });
+
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
 });
 
-expense.belongsTo(user, {
-  foreignKey: "userId",
-});
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
-user.hasMany(forgotPassword, {
-  foreignKey: "userId",
-  onDelete: "CASCADE",
-  hooks: true,
-});
-
-forgotPassword.belongsTo(user, {
-  foreignKey: "userId",
-});
-
-module.exports = { user, expense, forgotPassword };
+module.exports = db;
