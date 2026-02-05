@@ -26,7 +26,7 @@ app.get("/resetPassword/:uuid", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/resetPassword.html"));
 });
 
-db.sync({})
+db.sync()
   .then(() => {
     console.log("All models attached to db are synced");
   })
