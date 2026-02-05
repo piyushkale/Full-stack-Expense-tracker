@@ -7,12 +7,14 @@
     <title>Expenses</title>
     <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
   </head>
-  <body>
+  <body class="dark:bg-slate-500">
     <button
       id="buy-premium-btn"
       onclick="handleCashfree()"
       class="fixed top-0 md:top-4 right-0 md:right-4 z-50 px-5 py-2.5 rounded-full scale-[60%] md:scale-100 bg-linear-to-r from-yellow-400 via-amber-500 to-yellow-600 text-black font-semibold shadow-lg shadow-yellow-500/40 hover:scale-105 hover:shadow-xl active:scale-95 transition-all duration-200"
     ></button>
+
+    <button onclick="toggleTheme()" class="absolute left-35 top-5 bg-slate-900/80 p-1 rounded-md hover:brightness-125 hover:bg-slate-800 cursor-pointer dark:bg-slate-500">🌙</button>
 
     <h2
       id="premium-h2"
@@ -23,13 +25,13 @@
       id="username-tag"
       class="absolute top-2 left-3 font-bold text-2xl bg-blue-900/70 text-gray-200 p-2 rounded-md"
     ></h2>
-    <h2 class="text-2xl font-mono text-center p-6 bg-blue-200">
+    <h2 class="text-2xl font-mono text-center p-6 bg-blue-200 dark:bg-slate-800 dark:text-gray-300">
       Manage Expenses 💰💸
     </h2>
 
     <!-- Premium features div -->
     <div
-      class="absolute right-2 -translate-y-4 hidden bg-indigo-400/70 px-2 py-1 rounded-md border-b-2 border-indigo-900"
+      class="absolute right-2 scale-90 -translate-y-4 hidden bg-indigo-400/70 px-2 py-1 rounded-md border-b-2 border-indigo-900"
       id="premium-div"
     >
       <button
@@ -57,11 +59,11 @@
       <!--  Add expense form -->
       <form
         onsubmit="handleExpenseSubmit(event)"
-        class="flex justify-center flex-wrap gap-4 bg-blue-100 py-8 pt-10 text-md"
+        class="flex justify-center flex-wrap gap-4 bg-blue-100 py-8 pt-10 text-md dark:bg-slate-600 dark:text-gray-300"
       >
         <label for="l-amount">Expense amount</label>
         <input
-          class="bg-gray-200 border border-black"
+          class="bg-gray-200 dark:bg-gray-300 dark:text-gray-900 border border-black"
           type="number"
           name="amount"
           id="l-amount"
@@ -69,7 +71,7 @@
         />
         <label for="l-description">Description</label>
         <input
-          class="bg-gray-200 border border-black"
+          class="bg-gray-200 dark:bg-gray-300 dark:text-gray-900 border border-black"
           type="text"
           name="description"
           id="l-description"
@@ -77,7 +79,7 @@
         />
         <label for="l-note">Note</label>
         <input
-          class="bg-gray-200 border border-black"
+          class="bg-gray-200 dark:bg-gray-300 dark:text-gray-900 border border-black"
           type="text"
           name="note"
           id="l-note"
@@ -97,7 +99,7 @@
         </select>
         <button
           type="submit"
-          class="bg-green-200 px-2 rounded-md border border-gray-700 hover:bg-green-400"
+          class="bg-green-200 font-medium px-2 rounded-md border border-gray-700 hover:bg-green-400 dark:bg-green-400 dark:hover:bg-green-300 cursor-pointer dark:text-slate-800"
         >
           Add expense
         </button>
@@ -107,36 +109,37 @@
       <section>
         <ul
           id="ul-leaderboard"
-          class="flex flex-col gap-4 items-center bg-gray-200 text-gray-900 pl-8 text-lg"
+          class="flex flex-col gap-3 items-center bg-gray-200 dark:bg-slate-800 text-gray-900 dark:text-gray-300 text-lg"
         ></ul>
       </section>
+
       <!-- Expense History Display section  -->
       <section>
-        <h2 class="text-2xl font-mono text-center p-6 bg-blue-200">
+        <h2 class="text-2xl font-mono text-center p-6 bg-blue-200 dark:bg-slate-700 dark:text-gray-300">
           Expense History 📈
         </h2>
         <ul
           id="ul-container"
-          class="flex flex-col gap-4 items-center p-2 bg-gray-200 min-h-96 text-gray-800 pl-8 text-lg"
+          class="flex flex-col gap-4 items-center p-2 bg-gray-200 min-h-96 dark:bg-slate-800 text-gray-800 dark:text-gray-300 pl-8 text-lg"
         ></ul>
         <!-- Pagination -->
         <div id="pagination" class="flex justify-center gap-2 items-center">
           <button
             id="prevBtn"
-            class="bg-gray-100 border border-gray-500 px-1 rounded-sm cursor-pointer m-2"
+            class="bg-gray-100 dark:bg-slate-700 hover:brightness-110 dark:text-gray-200 border border-gray-500 px-1 rounded-sm cursor-pointer m-2"
           >
             Prev
           </button>
           <span id="pageInfo">1</span>
           <button
             id="nextBtn"
-            class="bg-gray-100 border border-gray-500 px-1 rounded-sm cursor-pointer m-2"
+            class="bg-gray-100 dark:bg-slate-700 hover:brightness-110 dark:text-gray-200 border border-gray-500 px-1 rounded-sm cursor-pointer m-2"
           >
             Next
           </button>
           <button
             id="lastBtn"
-            class="bg-gray-100 border border-gray-500 px-1 rounded-sm cursor-pointer m-2"
+            class="bg-gray-100 dark:bg-slate-700 hover:brightness-110 dark:text-gray-200 border border-gray-500 px-1 rounded-sm cursor-pointer m-2"
           >
             Last
           </button>
