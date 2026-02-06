@@ -114,10 +114,11 @@
       </section>
 
       <!-- Expense History Display section  -->
-      <section>
+      <section class="relative">
         <h2 class="text-2xl font-mono text-center p-6 bg-blue-200 dark:bg-slate-700 dark:text-gray-300">
           Expense History 📈
         </h2>
+        <button onclick="downloadReport()" class="absolute top-5 right-8 bg-slate-900/90 p-1 rounded-sm text-white cursor-pointer active:scale-90 transition-all duration-200">Download Report</button>
         <ul
           id="ul-container"
           class="flex flex-col gap-4 items-center p-2 bg-gray-200 min-h-96 dark:bg-slate-800 text-gray-800 dark:text-gray-300 pl-8 text-lg"

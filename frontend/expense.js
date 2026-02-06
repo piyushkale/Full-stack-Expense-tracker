@@ -2,6 +2,7 @@ let token;
 let currentPage = 1;
 let totalPages = 1;
 let rowsPerPage = Number(localStorage.getItem("rowsPerPage")) || 10;
+let isPremium = false;
 
 const params = new URLSearchParams(window.location.search);
 const orderId = params.get("order_id");
@@ -40,6 +41,7 @@ async function isUser() {
     userTag.innerText = response.data.name;
     if (response.data.isPremium) {
       premiumUser();
+      isPremium = true;
     } else {
       document.getElementById("buy-premium-btn").innerText =
         "Buy Premium membership";
@@ -80,7 +82,8 @@ async function showLeaderboard() {
     console.log(leaderboardData);
     const h2 = document.createElement("h2");
     h2.innerText = "Leaderboard";
-    h2.className = "text-2xl text-center px-2 dark:bg-slate-600 rounded-sm m-2 bg-blue-200";
+    h2.className =
+      "text-2xl text-center px-2 dark:bg-slate-600 rounded-sm m-2 bg-blue-200";
     ulContainer.appendChild(h2);
     leaderboardData.forEach((record) => {
       const li = document.createElement("li");
@@ -162,7 +165,8 @@ async function displayExpenseHistory(page = 1) {
     data.forEach((expense) => {
       const li = document.createElement("li");
       li.innerText = `📑 Description: ${expense.description} ▪️ amount ${expense.amount} ▪️ category ${expense.category} ▪️ note :${expense.note ? expense.note : "not added"}`;
-      li.className = "bg-gray-300 dark:bg-slate-600 px-12 py-2 min-w-full rounded-md font-medium";
+      li.className =
+        "bg-gray-300 dark:bg-slate-600 px-12 py-2 min-w-full rounded-md font-medium";
       const deleteBtn = document.createElement("button");
       deleteBtn.innerText = "Delete";
       deleteBtn.className =
@@ -274,4 +278,20 @@ function displayYearlyReport() {
 // Toggle theme - dark mode
 function toggleTheme() {
   document.documentElement.classList.toggle("dark");
+}
+
+// Download report
+async function downloadReport() {
+  try {
+    if (isPremium) {
+      const response = await axios.get("/expense/downloadExpenses", {
+        headers: { Authorization: token },
+      });
+      window.location.href = response.data.download;
+    } else {
+      alert("Feature only available to premium users!");
+    }
+  } catch (error) {
+    console.log(error.response.data.error);
+  }
 }
