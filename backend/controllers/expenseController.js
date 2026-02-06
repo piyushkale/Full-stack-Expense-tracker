@@ -1,13 +1,14 @@
 const expenseModel = require("../models/expenseModel");
 const userModel = require("../models/userModel");
 const aiService = require("../services/categoryAI");
+const expenseFile = require("../services/expensesFile");
 const sequelize = require("../utils/db-connection");
 
 const addExpense = async (req, res) => {
   const t = await sequelize.transaction();
 
   try {
-    const { amount, category, description ,note} = req.body;
+    const { amount, category, description, note } = req.body;
 
     const userId = req.user.userId;
 
@@ -17,7 +18,7 @@ const addExpense = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     await user.createExpense(
-      { amount, description, category ,note},
+      { amount, description, category, note },
       { transaction: t },
     );
     await user.increment("totalExpense", {
@@ -101,4 +102,26 @@ const categoryAI = async (req, res) => {
   }
 };
 
-module.exports = { addExpense, getAllExpense, deleteExpense, categoryAI };
+const downloadExpenses = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const expenseData = await expenseModel.findAll({
+      where: { userId: userId },
+      attributes: ["description", "amount", "category", "note"],
+    });
+
+    const fileUrl = await expenseFile(expenseData, userId);
+
+    res.status(200).json({ download: fileUrl });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = {
+  addExpense,
+  getAllExpense,
+  deleteExpense,
+  categoryAI,
+  downloadExpenses,
+};
