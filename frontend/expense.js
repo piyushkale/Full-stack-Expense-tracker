@@ -3,6 +3,7 @@ let currentPage = 1;
 let totalPages = 1;
 let rowsPerPage = Number(localStorage.getItem("rowsPerPage")) || 10;
 let isPremium = false;
+let theme = localStorage.getItem("theme") || false;
 
 const params = new URLSearchParams(window.location.search);
 const orderId = params.get("order_id");
@@ -21,9 +22,12 @@ if (orderId) {
 window.onload = () => {
   storedToken = localStorage.getItem("token");
   if (!storedToken) {
-    alert("User not logged in");
+    // alert("User not logged in");
     window.location.href = "/index.html";
     return;
+  }
+  if (theme === "dark") {
+    toggleTheme();
   }
   token = `Bearer ${storedToken}`;
 
@@ -158,6 +162,7 @@ async function displayExpenseHistory(page = 1) {
     );
     const data = response.data.expenses;
     currentPage = response.data.currentPage;
+    document.getElementById("pageInfo").innerText = currentPage;
     totalPages = response.data.totalPages;
     const ulContainer = document.getElementById("ul-container");
     ulContainer.innerHTML = "";
@@ -278,6 +283,11 @@ function displayYearlyReport() {
 // Toggle theme - dark mode
 function toggleTheme() {
   document.documentElement.classList.toggle("dark");
+  if (document.documentElement.classList.contains("dark")) {
+    localStorage.setItem("theme", "dark");
+  } else {
+    localStorage.removeItem("theme");
+  }
 }
 
 // Download report
@@ -294,4 +304,9 @@ async function downloadReport() {
   } catch (error) {
     console.log(error.response.data.error);
   }
+}
+
+function userLogout() {
+  localStorage.removeItem("token");
+  window.location.href = "/index.html";
 }

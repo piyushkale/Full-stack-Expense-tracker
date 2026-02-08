@@ -14,7 +14,12 @@
       class="fixed top-0 md:top-4 right-0 md:right-4 z-50 px-5 py-2.5 rounded-full scale-[60%] md:scale-100 bg-linear-to-r from-yellow-400 via-amber-500 to-yellow-600 text-black font-semibold shadow-lg shadow-yellow-500/40 hover:scale-105 hover:shadow-xl active:scale-95 transition-all duration-200"
     ></button>
 
-    <button onclick="toggleTheme()" class="absolute left-35 top-5 bg-slate-900/80 p-1 rounded-md hover:brightness-125 hover:bg-slate-800 cursor-pointer dark:bg-slate-500">🌙</button>
+    <button
+      onclick="toggleTheme()"
+      class="absolute left-35 top-5 bg-slate-900/80 p-1 rounded-md hover:brightness-125 hover:bg-slate-800 cursor-pointer dark:bg-slate-500"
+    >
+      🌙
+    </button>
 
     <h2
       id="premium-h2"
@@ -25,7 +30,15 @@
       id="username-tag"
       class="absolute top-2 left-3 font-bold text-2xl bg-blue-900/70 text-gray-200 p-2 rounded-md"
     ></h2>
-    <h2 class="text-2xl font-mono text-center p-6 bg-blue-200 dark:bg-slate-800 dark:text-gray-300">
+    <button
+      onclick="userLogout()"
+      class="absolute top-16 left-3 bg-red-500/80 cursor-pointer px-1 font-semibold text-gray-200 hover:bg-red-600/80 active:scale-90 transition-all duration-200 rounded-sm"
+    >
+      Logout 🔓
+    </button>
+    <h2
+      class="text-2xl font-mono text-center p-6 bg-blue-200 dark:bg-slate-800 dark:text-gray-300"
+    >
       Manage Expenses 💰💸
     </h2>
 
@@ -54,6 +67,8 @@
         Yearly report
       </button>
     </div>
+
+    <!-- Add expense form - Expense history and leaderboard section  -->
 
     <div id="home-div">
       <!--  Add expense form -->
@@ -86,7 +101,7 @@
         />
         <label for="l-category">Choose category</label>
         <select
-          class="border border-gray-800"
+          class="border border-gray-800 dark:text-gray-900"
           name="category"
           id="l-category"
           required
@@ -115,10 +130,17 @@
 
       <!-- Expense History Display section  -->
       <section class="relative">
-        <h2 class="text-2xl font-mono text-center p-6 bg-blue-200 dark:bg-slate-700 dark:text-gray-300">
+        <h2
+          class="text-2xl font-mono text-center p-6 bg-blue-200 dark:bg-slate-700 dark:text-gray-300"
+        >
           Expense History 📈
         </h2>
-        <button onclick="downloadReport()" class="absolute top-5 right-8 bg-slate-900/90 p-1 rounded-sm text-white cursor-pointer active:scale-90 transition-all duration-200">Download Report</button>
+        <button
+          onclick="downloadReport()"
+          class="absolute top-5 right-8 bg-slate-900/90 p-1 rounded-sm text-white cursor-pointer active:scale-90 transition-all duration-200"
+        >
+          Download Report
+        </button>
         <ul
           id="ul-container"
           class="flex flex-col gap-4 items-center p-2 bg-gray-200 min-h-96 dark:bg-slate-800 text-gray-800 dark:text-gray-300 pl-8 text-lg"
@@ -145,14 +167,13 @@
             Last
           </button>
           <label for="rowsPerPage">No. of</label>
-            <select id="rowsPerPage" class="border border-gray-600 bg-slate-100">
-              <option disabled selected>rows</option>
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="25">25</option>
-        </select>
+          <select id="rowsPerPage" class="border border-gray-600 bg-slate-100">
+            <option disabled selected>rows</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+          </select>
         </div>
-      
       </section>
     </div>
 
