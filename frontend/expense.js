@@ -172,6 +172,10 @@ async function displayExpenseHistory(page = 1) {
       li.innerText = `📑 Description: ${expense.description} ▪️ amount ${expense.amount} ▪️ category ${expense.category} ▪️ note :${expense.note ? expense.note : "not added"}`;
       li.className =
         "bg-gray-300 dark:bg-slate-600 px-12 py-2 min-w-full rounded-md font-medium";
+      // Edit functionality
+      const editBtn = document.createElement('button');
+      editBtn.innerText='Edit';
+      editBtn.onclick=()=>{updateExpense(li,expense)}
       const deleteBtn = document.createElement("button");
       deleteBtn.innerText = "Delete";
       deleteBtn.className =
@@ -179,12 +183,22 @@ async function displayExpenseHistory(page = 1) {
       deleteBtn.onclick = () => {
         deleteExpense(expense.id);
       };
+      
+      
+      li.appendChild(editBtn)
       li.appendChild(deleteBtn);
       ulContainer.append(li);
     });
   } catch (error) {
     console.log(error);
   }
+}
+
+async function updateExpense(li,expense){
+  li.innerHTML = `Amount <input type="number" name="amount" value="${expense.amount}"/> Description <input type="text" name="description" value="${expense.description}"/> <button class="update-btn">Update</button>"`
+  li.querySelector('.update-btn').addEventListener('click',()=>{
+    // get value from this list element and make a put request to db
+  })
 }
 // Pagination
 
@@ -310,3 +324,4 @@ function userLogout() {
   localStorage.removeItem("token");
   window.location.href = "/index.html";
 }
+
