@@ -11,7 +11,6 @@ A full-stack expense tracker web application to manage daily expenses with authe
 
 ## 🛠 Tech Stack
 **Frontend**
-- React.js
 - Tailwind CSS
 
 **Backend**
