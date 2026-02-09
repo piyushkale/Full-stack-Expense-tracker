@@ -172,6 +172,20 @@ async function displayExpenseHistory(page = 1) {
       li.innerText = `📑 Description: ${expense.description} ▪️ amount ${expense.amount} ▪️ category ${expense.category} ▪️ note :${expense.note ? expense.note : "not added"}`;
       li.className =
         "bg-gray-300 dark:bg-slate-600 px-12 py-2 min-w-full rounded-md font-medium";
+      // Edit functionality
+      const editBtn = document.createElement("button");
+      editBtn.innerText = "Edit";
+      editBtn.onclick = () => {
+        updateExpense(li, expense);
+      };
+      editBtn.classList.add(
+        "bg-blue-500",
+        "px-2",
+        "rounded-sm",
+        "mx-2",
+        "cursor-pointer",
+        "hover:bg-blue-700",
+      );
       const deleteBtn = document.createElement("button");
       deleteBtn.innerText = "Delete";
       deleteBtn.className =
@@ -179,6 +193,8 @@ async function displayExpenseHistory(page = 1) {
       deleteBtn.onclick = () => {
         deleteExpense(expense.id);
       };
+
+      li.appendChild(editBtn);
       li.appendChild(deleteBtn);
       ulContainer.append(li);
     });
@@ -186,6 +202,34 @@ async function displayExpenseHistory(page = 1) {
     console.log(error);
   }
 }
+
+// Update Expense record
+async function updateExpense(li, expense) {
+  li.innerHTML = `<form>Description <input type="text" name="description" value="${expense.description}" required/> Amount <input type="number" name="amount" value="${expense.amount}" required/>  <button type="submit" class="update-btn mx-2 bg-emerald-400 hover:bg-emerald-700 cursor-pointer px-2 rounded-sm text-slate-900">Update</button></form>`;
+  li.className =
+    "[&_input]:border [&_input]:rounded-md [&_input]:px-2 [&_input]:py-1 [&_input]:focus:ring-2 [&_input]:focus:ring-blue-400";
+  li.querySelector("form").addEventListener("submit", async (e) => {
+    // get value from this list element and make a put request to db
+    e.preventDefault();
+    const description = li.querySelector('input[name="description"]').value;
+    const amount = li.querySelector('input[name="amount"]').value;
+    try {
+      const response = await axios.put(
+        "/expense/update",
+        {
+          description,
+          amount,
+          id: expense.id,
+        },
+        { headers: { Authorization: token } },
+      );
+      displayExpenseHistory(currentPage);
+    } catch (error) {
+      console.log(error.response.data.error);
+    }
+  });
+}
+
 // Pagination
 
 document.getElementById("prevBtn").onclick = () => {
