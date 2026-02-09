@@ -14,4 +14,6 @@ router.post("/getCategoryAI", exController.categoryAI);
 
 router.get("/downloadExpenses", exController.downloadExpenses);
 
+router.put('/update',exController.updateExpense);
+
 module.exports = router;

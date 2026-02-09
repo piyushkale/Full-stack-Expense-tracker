@@ -66,6 +66,47 @@ const getAllExpense = async (req, res) => {
   }
 };
 
+const updateExpense = async (req, res) => {
+  const t = await sequelize.transaction();
+  const { description, amount, id } = req.body;
+
+  try {
+    if (!description || amount == null || !id) {
+      await t.rollback();
+      return res.status(400).json({ message: "Missing required inputs" });
+    }
+
+    const oldExpense = await expenseModel.findByPk(id, { transaction: t });
+    if (!oldExpense) {
+      await t.rollback();
+      return res.status(404).json({ message: "Expense not found" });
+    }
+
+    const user = await oldExpense.getUser({ transaction: t });
+
+    user.totalExpense -= Number(oldExpense.amount);
+    user.totalExpense += Number(amount);
+
+    await user.save({ transaction: t });
+
+    const [affectedRows] = await expenseModel.update(
+      { description, amount },
+      { where: { id }, transaction: t },
+    );
+
+    if (affectedRows < 1) {
+      await t.rollback();
+      return res.status(404).json({ message: "Expense not found" });
+    }
+
+    await t.commit();
+    return res.status(200).json({ message: "Expense updated" });
+  } catch (error) {
+    await t.rollback();
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 const deleteExpense = async (req, res) => {
   const t = await sequelize.transaction();
   try {
@@ -124,4 +165,5 @@ module.exports = {
   deleteExpense,
   categoryAI,
   downloadExpenses,
+  updateExpense,
 };
