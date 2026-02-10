@@ -162,8 +162,8 @@ async function displayExpenseHistory(page = 1) {
     );
     const data = response.data.expenses;
     currentPage = response.data.currentPage;
-    document.getElementById("pageInfo").innerText = currentPage;
     totalPages = response.data.totalPages;
+       document.getElementById("pageInfo").innerText = `${currentPage}/${totalPages}`;
     const ulContainer = document.getElementById("ul-container");
     ulContainer.innerHTML = "";
 
@@ -354,3 +354,4 @@ function userLogout() {
   localStorage.removeItem("token");
   window.location.href = "/index.html";
 }
+
